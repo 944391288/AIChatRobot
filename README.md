@@ -1,4 +1,4 @@
-# AIChatRobot
+﻿# AIChatRobot
 设计的一个聊天机器人原型，Android客户端+PC服务器
 
 # 关于通信
@@ -14,3 +14,9 @@ UDP下的socket方便实现
 
 # 数据库
 采用MySQL5.7
+
+# 文件夹说明
+database：用于存放mysql中导出的数据库文件，在编程时不要更改数据库的结构
+doc：用于存放设计文档
+src_Android：用于存放Android客户端工程
+src_PC：用于存放PC服务器源码
