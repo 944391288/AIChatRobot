@@ -3,6 +3,7 @@ package Server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import Bean.User;
@@ -29,7 +30,7 @@ public class MyServer {
                 try {
                     handleSocket(socket);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("\n Error: "+e.getMessage());
                 }
             });
         }
@@ -38,10 +39,11 @@ public class MyServer {
     public void handleSocket(Socket clientSocket) throws IOException {
         DataInputStream input = new DataInputStream(clientSocket.getInputStream());
         DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
-        ObjectOutputStream oos = new ObjectOutputStream(output);
-        ObjectInputStream ois = new ObjectInputStream(input);
 
-        while ()
+        String msg=null;
+        while ((msg=input.readUTF().toString())!=null){
+            System.out.println(msg);
+        }
     }
 
 }
