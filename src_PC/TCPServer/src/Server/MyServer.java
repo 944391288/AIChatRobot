@@ -39,10 +39,12 @@ public class MyServer {
     public void handleSocket(Socket clientSocket) throws IOException {
         DataInputStream input = new DataInputStream(clientSocket.getInputStream());
         DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
-
+        BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(output));
         String msg=null;
         while ((msg=input.readUTF().toString())!=null){
             System.out.println(msg);
+            output.writeUTF("server text");
+
         }
     }
 
