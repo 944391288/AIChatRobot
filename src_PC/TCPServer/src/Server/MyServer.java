@@ -55,12 +55,17 @@ public class MyServer {
             System.out.println(sql);
             ResultSet rs=dbserver.executeQuery(sql);
             int col=rs.getMetaData().getColumnCount();
-            while(rs.next()){
-                for(int i=1;i<=col;i++){
-                    output.writeUTF(rs.getString(i));
+            if(!rs.next())
+            {
+                output.writeUTF("找不到相关问题");
+            }else
+                while(rs.next()){
+                    for(int i=1;i<=col;i++){
+                        output.writeUTF(rs.getString(i));
+                    }
+                    System.out.println();
                 }
-                System.out.println();
-            }
+
 
 
         }
