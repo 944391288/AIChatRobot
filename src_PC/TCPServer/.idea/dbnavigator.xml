@@ -25,7 +25,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="a954cb57-e050-4a43-95c2-268a40fd9397">
-        <schema name="chatrobot" object-types="column, constraint, function, index, procedure, table, dataset trigger, view" />
+        <schema name="chatrobot" object-types="column, function, procedure, table, view" />
       </connection>
     </loaded-nodes>
   </component>

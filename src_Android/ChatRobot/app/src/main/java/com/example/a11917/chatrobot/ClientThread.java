@@ -37,7 +37,6 @@ public class ClientThread implements Runnable{
     {
         try
         {
-            System.out.println("sadaadasdadadasdasd!!!!!!!!!");
             s=new Socket("192.168.199.129",8989);
             br = new BufferedReader(new InputStreamReader(s.getInputStream()));
             os = new DataOutputStream(s.getOutputStream());
