@@ -1,4 +1,4 @@
-package com.example.a11917.chatrobot;
+package util;
 
 import java.io.Serializable;
 

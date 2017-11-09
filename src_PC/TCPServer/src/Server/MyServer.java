@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import Bean.*;
-
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import util.CommandTransfer;
 
 
 public class MyServer {
@@ -22,7 +22,6 @@ public class MyServer {
     private ServerSocket serverSocket = null;
     private Socket socket = null;
     private final static int PORT = 8989;
-    private User user=null;
 
     public static void main(String[] args) throws IOException {
         MyServer server = new MyServer();
@@ -37,43 +36,50 @@ public class MyServer {
             System.out.println("A new client connect\n");
             myThreadPool.execute(() -> {
                 try {
-                    handleSocket(socket,user);
+                    handleSocket(socket);
                 } catch (IOException e) {
                     System.out.println("\n Error: "+e.getMessage());
                 } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             });
         }
     }
 
-    public void handleSocket(Socket clientSocket,User user) throws IOException, SQLException {
+    public void handleSocket(Socket clientSocket) throws IOException, SQLException, ClassNotFoundException {
         DataInputStream input = new DataInputStream(clientSocket.getInputStream());
         DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
+        ObjectInputStream ois=new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos=new ObjectOutputStream(socket.getOutputStream());
+
         BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(output));
         String msg;
         while (true){
-            msg=input.readUTF().toString();
-            List<Term> words=ToAnalysis.parse(msg).getTerms();
-            for
+            CommandTransfer comTrans=null;
+            comTrans= (CommandTransfer) ois.readObject();
+            switch (comTrans.getCmd()){
+                case "talk":   //接收的数据属于对话
+                    msg=comTrans.getData().toString();
+//                    List<Term> words=ToAnalysis.parse(msg).getTerms();
+                    System.out.println(msg);
+                    String sql="select Qid,Qanswer from question where Qkey = '"+msg+"'";
+                    ResultSet rs=dbserver.executeQuery(sql);
 
-            String sql="select Qanswer from question where Qkey = '"+msg+"'";
-
-            System.out.println(sql);
-            ResultSet rs=dbserver.executeQuery(sql);
-            int col=rs.getMetaData().getColumnCount();
-            if(!rs.next())
-            {
-                output.writeUTF("找不到相关问题");
-            }else
-                while(rs.next()){
-                    for(int i=1;i<=col;i++){
-                        output.writeUTF(rs.getString(i));
+                    int col=rs.getMetaData().getColumnCount();
+                    while(rs.next()){
+                        for(int i=1;i<=col;i++){
+                            comTrans.setResult(rs.getString(i));
+                            oos.writeObject(comTrans);
+                        }
                     }
-                    System.out.println();
-                }
-
-
+                    break;
+                case "login":
+                    break;
+                default:
+                    break;
+            }
 
         }
     }
