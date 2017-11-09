@@ -3,7 +3,7 @@ package Server;
 import java.sql.*;
 
 public class DBServer {
-    private final static String url="jdbc:mysql://localhost:3306/chatrobot";
+    private final static String url="jdbc:mysql://localhost:3306/chatrobot?useUnicode=true&characterEncoding=utf-8&useSSL=false";
     private final static String user = "root";
     private final static String psw = "123456";
     private static Connection conn;

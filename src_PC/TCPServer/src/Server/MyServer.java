@@ -5,9 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import Bean.*;
+
+import org.ansj.domain.Result;
+import org.ansj.domain.Term;
+import org.ansj.splitWord.analysis.ToAnalysis;
 
 
 public class MyServer {
@@ -49,6 +54,8 @@ public class MyServer {
         String msg;
         while (true){
             msg=input.readUTF().toString();
+            List<Term> words=ToAnalysis.parse(msg).getTerms();
+            for
 
             String sql="select Qanswer from question where Qkey = '"+msg+"'";
 
